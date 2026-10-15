@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { useAuth } from "../context/AuthContext";
 
 export default function RequireSeller({ children }) {
@@ -7,5 +8,6 @@ export default function RequireSeller({ children }) {
         return <p className="notice">Log in as a seller from the menu at the top to manage products.</p>;
     }
 
-    return children;
+    // key makes the page start fresh when the seller changes, no old data or errors
+    return <Fragment key={user.id}>{children}</Fragment>;
 }

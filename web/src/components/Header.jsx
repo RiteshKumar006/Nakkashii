@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 
@@ -12,6 +12,8 @@ const DEMO_USERS = [
 export default function Header() {
     const { user, loginAs, logout } = useAuth();
     const { count } = useCart();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     async function handleChange(e) {
         const email = e.target.value;
@@ -19,6 +21,11 @@ export default function Header() {
             await loginAs(email);
         } else {
             logout();
+        }
+
+        // the product being edited belongs to the old seller, go to the new seller's list
+        if (location.pathname.startsWith("/seller/products/")) {
+            navigate("/seller");
         }
     }
 
