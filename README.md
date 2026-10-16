@@ -9,7 +9,7 @@ Design decisions, trade-offs and what was cut are in [NOTES.md](NOTES.md).
 
 ## Setup
 
-**Needs:** Node 20.19+ (or 22.12+) and a MongoDB (local `mongod` or a free Atlas cluster).
+**Needs:** Node 20.19+ (or 22.12+) and a MongoDB database. I developed against a live MongoDB Atlas cluster; a local `mongod` works too.
 
 ```bash
 git clone <repo-url>
@@ -35,7 +35,7 @@ Open http://localhost:5173 and use the dropdown at the top right to log in as a 
 | Name | Example | Notes |
 |---|---|---|
 | `PORT` | `5000` | API port. The Vite proxy expects 5000. |
-| `MONGODB_URI` | `mongodb://localhost:27017/nakkashii` | Any MongoDB connection string. |
+| `MONGODB_URI` | `mongodb+srv://<user>:<password>@<cluster>.mongodb.net/nakkashii` | Atlas connection string, or `mongodb://localhost:27017/nakkashii` for local. |
 | `JWT_SECRET` | random 64 char hex | `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
 | `CLIENT_URL` | `http://localhost:5173` | CORS origin. Not needed in dev since Vite proxies `/api`. |
 
@@ -68,7 +68,9 @@ cd server && npm test    # 26 tests
 cd web && npm test       # 9 tests
 ```
 
-Both use Node's built in test runner. Server tests use `mongodb-memory-server`, so no database is needed (first run downloads a MongoDB binary, about 100 MB).
+Both use Node's built in test runner.
+
+The app itself runs on the live MongoDB from `MONGODB_URI`, but the server tests **do not touch it**. They start a temporary in-memory MongoDB (`mongodb-memory-server`) and clear it before each test, so running the tests can never delete real data. No database setup is needed for the tests (the first run downloads a MongoDB binary, about 100 MB).
 
 **Covered**
 - Variant rules: combination key, duplicate combination / SKU (case insensitive), missing or extra attribute

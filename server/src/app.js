@@ -7,7 +7,7 @@ import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import sellerRoutes from "./routes/seller.routes.js";
 import { uploadDir } from "./config/upload.js";
-``
+
 // app is separate from server.js so tests can use it without listening on a port
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(helmet());
 
 app.use(cors(
     {
-        origin: process.env.CLIENT_URL || 'http://localhost:5174',
+        origin: process.env.CLIENT_URL || 'http://localhost:5173',
     }
 ));
 
